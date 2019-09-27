@@ -19,7 +19,7 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
 
     lateinit var viewDataBinding: T
     abstract val layoutResourceId: Int
-    abstract val viewModel: R
+    abstract val vm: R
 
     abstract fun initStartView()
     abstract fun initDataBinding()

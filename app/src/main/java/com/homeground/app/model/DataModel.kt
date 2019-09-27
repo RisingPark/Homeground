@@ -1,6 +1,8 @@
 package com.tistory.deque.kotlinmvvmsample.model
 
-interface DataModel {
+import android.content.Context
+import com.homeground.app.view.main.bean.MenuItemDTO
 
-//    fun getRecyclerViewData(type:Int?, num: Int?): ArrayList<String>
+interface DataModel {
+    fun base()
 }

@@ -22,4 +22,28 @@
         <item name="android:windowAnimationStyle">@android:style/Animation</item>
     </style>
 
+    <style name="CommonToolbar" parent="Base.V7.Widget.AppCompat.Toolbar">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/common_toolbar_height</item>
+        <item name="contentInsetLeft">0dp</item>
+        <item name="contentInsetStart">0dp</item>
+        <item name="contentInsetRight">0dp</item>
+        <item name="contentInsetEnd">0dp</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+    <style name="HintText" parent="Widget.Design.TextInputLayout">
+        <item name="android:textColor">@color/warm_grey</item>
+        <item name="android:textSize">@dimen/text_size_12</item>
+    </style>
+
+    <style name="TextInputEditTextStyle">
+        <item name="android:inputType">text</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:lines">1</item>
+        <item name="android:maxLength">20</item>
+        <item name="android:imeOptions">flagNoExtractUi</item>
+    </style>
+
+
 </resources>
