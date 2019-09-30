@@ -89,6 +89,24 @@
                 android:orientation="vertical"
                 android:padding="@dimen/layout_padding">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_20"
+                    android:text="@string/note" />
+
+                <EditText
+                    android:id="@+id/note_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/common_padding_start"
+                    android:imeOptions="flagNoExtractUi"
+                    android:textSize="@dimen/text_size_15"
+                    android:textColor="@color/black"
+                    android:background="@color/warm_grey_two"
+                    android:gravity="top"/>
+
             </LinearLayout>
 
         </LinearLayout>

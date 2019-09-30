@@ -6,11 +6,17 @@ import androidx.fragment.app.Fragment
 
 import com.homeground.app.common.base.BaseFragment
 import com.homeground.app.databinding.FragmentUserInfoBinding
-import com.homeground.app.view.main.model.UserInfoViewModel
+import com.homeground.app.view.auth.signup.model.UserInfoViewModel
 import kotlinx.android.synthetic.main.fragment_user_info.*
 import kotlinx.android.synthetic.main.layout_common_toolbar.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import android.app.DatePickerDialog
+import android.view.View
+import android.widget.Toast
+import com.homeground.app.R
+import com.homeground.app.common.DialogHelper
+import com.homeground.app.common.Utils
+import com.homeground.app.common.interfaces.OnDialogResultListener
 import java.util.*
 
 /**
@@ -32,6 +38,22 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
     }
 
     override fun initDataBinding() {
+        vm.signUpUserLiveData.observe(this, androidx.lifecycle.Observer {
+            hideLoadingProgress()
+            if (it.isSuccess) {
+                var msg = name_edit.text.toString()+"님\n"+getString(R.string.sign_up_finish)
+                DialogHelper.showCommonDialog(getBaseActivity(), msg, object : OnDialogResultListener{
+                    override fun resultSuccess(data: String) {
+                        activity?.finish()
+                    }
+                    override fun resultFailure(failMsg: String) {}
+                    override fun resultCancel() {}
+                })
+            } else {
+                var msg = getString(R.string.sign_up_fail)+"\n내용 : "+ it.msg
+                DialogHelper.showCommonDialog(getBaseActivity(), msg, null)
+            }
+        })
     }
 
     override fun initAfterBinding() {
@@ -42,6 +64,21 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
         common_toolbar_back_image.setOnClickListener {
             activity?.onBackPressed()
         }
+        common_toolbar_right_text.apply {
+            text= getString(R.string.do_join)
+            visibility = View.VISIBLE
+            setOnClickListener {
+                if (isValid()){
+                    showLoadingProgress()
+                    vm.setSignUpUser(
+                        name_edit.text.toString(),
+                        phone_edit.text.toString(),
+                        birthday_edit.text.toString(),
+                        note_edit.text.toString())
+                }
+            }
+        }
+
     }
 
     private fun setEditText() {
@@ -49,19 +86,33 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
 
         val onDateSetListener =
             DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-                birthday_edit.setText("$year-$month-$dayOfMonth")
+                birthday_edit.setText("$year-${month+1}-$dayOfMonth")
             }
-
 
         val currentDate = Calendar.getInstance()
         val year = currentDate.get(Calendar.YEAR)
-        val month = currentDate.get(Calendar.MONTH)-1
+        val month = currentDate.get(Calendar.MONTH)
         val dayOfMonth = currentDate.get(Calendar.DAY_OF_MONTH)
 
         birthday_layout.setOnClickListener {
-            val dialog = DatePickerDialog(activity,android.R.style.Theme_Holo_Light_Dialog, onDateSetListener, year, month, dayOfMonth)
-            dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent)
+            val dialog = DatePickerDialog(activity, android.R.style.Theme_Holo_Light_Dialog, onDateSetListener, year, month, dayOfMonth)
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
             dialog.show()
         }
     }
+
+    private fun isValid() : Boolean {
+        var notValidText = ""
+        if (Utils.isEmpty(name_edit.text.toString())){
+            notValidText = "${getString(R.string.name)}을 입력해주세요"
+            Toast.makeText(activity, notValidText, Toast.LENGTH_SHORT).show()
+            return false
+        } else if (Utils.isEmpty(phone_edit.text.toString())){
+            notValidText = "${getString(R.string.phone_num)}를 입력해주세요"
+            Toast.makeText(activity, notValidText, Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
 }

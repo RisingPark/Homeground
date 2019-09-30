@@ -64,4 +64,16 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
         }
         imm.hideSoftInputFromWindow(view!!.windowToken, 0)
     }
+
+    fun showLoadingProgress(){
+        getBaseActivity()?.showLoadingProgressBar()
+    }
+
+    fun hideLoadingProgress(){
+        getBaseActivity()?.hideLoadingProgressBar()
+    }
+
+    fun getBaseActivity() : BaseActivity? {
+        return activity as BaseActivity
+    }
 }

@@ -16,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewModel>() {
 
     companion object {
-        fun newInstance() = PointSearchFragment()
+        fun newInstance() = PointSaveFragment()
     }
 
     override val layoutResourceId: Int

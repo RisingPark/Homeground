@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:maxWidth="@dimen/common_dialog_max_width">
+
+    <TextView
+        android:id="@+id/dialog_msg_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/common_toolbar_padding_start_end"
+        android:layout_marginBottom="@dimen/common_toolbar_padding_start_end"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="@dimen/common_padding_start"
+        android:textSize="@dimen/text_size_20"
+        android:textColor="@color/black"/>
+
+
+    <com.homeground.app.common.ui.button.AlphaButton
+        android:id="@+id/dialog_confirm_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/common_button_height"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@color/colorAccent"
+        android:text="@string/confirm"/>
+
+</LinearLayout>

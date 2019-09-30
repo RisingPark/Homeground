@@ -2,6 +2,7 @@ package com.homeground.app
 
 import android.app.Activity
 import android.app.Application
+import com.google.firebase.FirebaseApp
 import com.homeground.app.di.module
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.Logger

@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import com.homeground.app.R
 import com.homeground.app.common.base.BaseFragment
 import com.homeground.app.databinding.FragmentUserInfoBinding
-import com.homeground.app.view.main.model.TemplateViewModel
-import com.homeground.app.view.main.model.UserInfoViewModel
 import com.homeground.app.view.settings.model.SettingsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

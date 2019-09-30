@@ -35,11 +35,23 @@
                     android:paddingStart="@dimen/common_toolbar_title_padding"
                     android:paddingEnd="@dimen/common_toolbar_title_padding"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_17"
+                    android:textSize="@dimen/text_size_25"
                     android:gravity="center"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:layout_gravity="center" />
+
+                <com.homeground.app.common.ui.textview.ScaleTextView
+                    android:id="@+id/common_toolbar_right_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:paddingEnd="@dimen/common_toolbar_padding_start"
+                    android:paddingTop="@dimen/common_padding"
+                    android:paddingBottom="@dimen/common_padding"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_20"
+                    android:visibility="gone"/>
 
             </FrameLayout>
 

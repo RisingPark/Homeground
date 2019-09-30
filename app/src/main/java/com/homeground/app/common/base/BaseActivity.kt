@@ -8,10 +8,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.homeground.app.HApplication
 import com.homeground.app.R
+import com.homeground.app.common.ui.dialog.LoadingProgressDialog
 import com.orhanobut.logger.Logger
 import java.lang.Exception
 
 open class BaseActivity : AppCompatActivity() {
+
+    var loadingProgressDialog: LoadingProgressDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -114,5 +117,33 @@ open class BaseActivity : AppCompatActivity() {
         ft.commitAllowingStateLoss()
     }
 
+    fun showLoadingProgressBar() {
+        if (loadingProgressDialog != null && loadingProgressDialog?.isShowing!!)
+            return
 
+
+        try {
+            if (isFinishing) {
+                return
+            }
+
+            runOnUiThread {
+                loadingProgressDialog = LoadingProgressDialog(this@BaseActivity)
+                loadingProgressDialog?.show()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun hideLoadingProgressBar() {
+        try {
+            if (loadingProgressDialog?.isShowing!!) {
+                loadingProgressDialog?.dismiss()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+    }
 }

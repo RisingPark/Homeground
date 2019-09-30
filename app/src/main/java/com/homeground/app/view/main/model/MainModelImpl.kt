@@ -20,12 +20,6 @@ class MainModelImpl: MainModel, DataModelImpl() {
         })
 
         defaultItem.add(MenuItemDTO().apply {
-            title = context?.getString(R.string.save)!!
-            iconRes = R.drawable.baseline_local_parking_black_36
-            cls = PointSaveActivity::class.java
-        })
-
-        defaultItem.add(MenuItemDTO().apply {
             title = context?.getString(R.string.search)!!
             iconRes = R.drawable.baseline_search_black_36
             cls = PointSearchActivity::class.java
