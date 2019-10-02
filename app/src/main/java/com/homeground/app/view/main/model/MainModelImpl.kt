@@ -20,7 +20,7 @@ class MainModelImpl: MainModel, DataModelImpl() {
         })
 
         defaultItem.add(MenuItemDTO().apply {
-            title = context?.getString(R.string.search)!!
+            title = context?.getString(R.string.user_search)!!
             iconRes = R.drawable.baseline_search_black_36
             cls = PointSearchActivity::class.java
         })

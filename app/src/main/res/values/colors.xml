@@ -8,4 +8,5 @@
     <color name="white">#ffffff</color>
     <color name="warm_grey">#999999</color>
     <color name="warm_grey_two">#eeeeee</color>
+    <color name="point">#ff0000</color>
 </resources>

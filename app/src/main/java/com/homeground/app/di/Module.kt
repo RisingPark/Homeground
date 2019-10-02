@@ -9,6 +9,7 @@ import com.homeground.app.view.main.model.*
 import com.homeground.app.view.point.save.model.PointSaveModel
 import com.homeground.app.view.point.save.model.PointSaveModelImpl
 import com.homeground.app.view.point.save.model.PointSaveViewModel
+import com.homeground.app.view.point.search.adapter.UserListRecyclerViewAdapter
 import com.homeground.app.view.point.search.model.PointSearchModel
 import com.homeground.app.view.point.search.model.PointSearchModelImpl
 import com.homeground.app.view.point.search.model.PointSearchViewModel
@@ -38,9 +39,8 @@ var viewModelPart = module {
 }
 
 var adapterPart = module {
-    factory {
-        MenuRecyclerViewAdapter()
-    }
+    factory { MenuRecyclerViewAdapter() }
+    factory { UserListRecyclerViewAdapter() }
 }
 
 var module = listOf(viewModelPart, modelPart, adapterPart)

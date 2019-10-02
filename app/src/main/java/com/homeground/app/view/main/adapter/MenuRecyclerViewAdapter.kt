@@ -13,15 +13,15 @@ class MenuRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() 
     var items = ArrayList<MenuItemDTO>()
     var onItemClickListener: OnItemClickListener? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = UserViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder = MenuViewHolder(parent)
 
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as UserViewHolder).onBind(items[holder.adapterPosition])
+        (holder as MenuViewHolder).onBind(items[holder.adapterPosition])
     }
 
-    inner class UserViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
+    inner class MenuViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_left_menu, parent, false)
     ) {
         fun onBind(items: MenuItemDTO?) {

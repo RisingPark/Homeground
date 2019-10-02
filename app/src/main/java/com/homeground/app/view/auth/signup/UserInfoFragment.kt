@@ -29,7 +29,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
     }
 
     override val layoutResourceId: Int
-        get() = com.homeground.app.R.layout.fragment_user_info
+        get() = R.layout.fragment_user_info
     override val vm: UserInfoViewModel by viewModel()
 
     override fun initStartView() {
@@ -103,14 +103,24 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
 
     private fun isValid() : Boolean {
         var notValidText = ""
-        if (Utils.isEmpty(name_edit.text.toString())){
-            notValidText = "${getString(R.string.name)}을 입력해주세요"
+        var isValid = true
+        when {
+            Utils.isEmpty(name_edit.text.toString()) -> {
+                notValidText = "${getString(R.string.name)}을 입력해주세요"
+                isValid = false
+            }
+            Utils.isEmpty(phone_edit.text.toString()) -> {
+                notValidText = "${getString(R.string.phone_num)}를 입력해주세요"
+                isValid = false
+            }
+            !Utils.isValidPhoneNumber(phone_edit.text.toString()) -> {
+                notValidText = "${getString(R.string.phone_num)}가 유효하지 않습니다."
+                isValid = false
+            }
+        }
+        if (!isValid){
             Toast.makeText(activity, notValidText, Toast.LENGTH_SHORT).show()
-            return false
-        } else if (Utils.isEmpty(phone_edit.text.toString())){
-            notValidText = "${getString(R.string.phone_num)}를 입력해주세요"
-            Toast.makeText(activity, notValidText, Toast.LENGTH_SHORT).show()
-            return false
+            return isValid
         }
         return true
     }

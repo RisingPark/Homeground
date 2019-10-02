@@ -1,5 +1,11 @@
 package com.homeground.app.common
 
+import java.lang.Long.parseLong
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import java.util.regex.Pattern
+
 class Utils {
     companion object {
 
@@ -20,5 +26,72 @@ class Utils {
                 s.size == 0
             } else false
         }
+
+        fun addComma(num: Long?): String {
+            val df = DecimalFormat("#,##0")
+            return try {
+                df.format(num)
+            } catch (e: Exception) {
+                "-"
+            }
+
+        }
+
+        fun addCommaStrNum(num: String): String {
+            val df = DecimalFormat("#,##0")
+            return try {
+                df.format(parseLong(num))
+            } catch (e: Exception) {
+                "-"
+            }
+        }
+
+        fun addCommaP(num: Long?): String {
+            return try {
+                addComma(num) + " P"
+            } catch (e: NumberFormatException) {
+                "-"
+            }
+
+        }
+
+        fun getCurrentDate(): String {
+            try {
+                val time: TimeZone
+                val date = Date()
+                val df = SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss", Locale.KOREA
+                )
+                time = TimeZone.getTimeZone("Asia/Seoul")
+                df.timeZone = time
+                return df.format(date)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return ""
+            }
+        }
+
+        /**
+         * 휴대폰 번호 유효성 체크
+         *
+         * @param cellphoneNumber
+         * @return boolean
+         */
+        fun isValidPhoneNumber(cellphoneNumber: String): Boolean {
+            var returnValue = false
+            val regex =
+                "^\\s*(010|011|012|013|014|015|016|017|018|019)(-|\\)|\\s)*(\\d{3,4})(-|\\s)*(\\d{4})\\s*$"
+            val p = Pattern.compile(regex)
+            val m = p.matcher(cellphoneNumber)
+
+            if (m.matches()) {
+                returnValue = true
+            }
+            return returnValue
+        }
+
     }
+
+
+
 }

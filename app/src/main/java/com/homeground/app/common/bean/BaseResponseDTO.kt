@@ -1,3 +1,14 @@
 package com.homeground.app.common.bean
 
-data class BaseResponseDTO(val isSuccess:Boolean, val msg: String)
+open class BaseResponseDTO {
+
+    var isSuccess:Boolean = false
+    var msg: String = ""
+
+    constructor()
+
+    constructor(isSuccess: Boolean , msg: String) {
+        this.isSuccess = isSuccess
+        this.msg = msg
+    }
+}

@@ -14,12 +14,8 @@ class UserInfoViewModel(private val model: UserInfoModel) : BaseViewModel() {
 
     fun setSignUpUser(name: String, phone: String, birthDay:String, note:String) {
         model.signUpUser(name, phone, birthDay, note, object : OnResponseListener<BaseResponseDTO>{
-            override fun onSuccessListener(response: BaseResponseDTO) {
-                _signUpUserLiveData.postValue(response)
-            }
-
-            override fun onFailureListener(response: BaseResponseDTO) {
-                _signUpUserLiveData.postValue(response)
+            override fun onCompleteListener(response: BaseResponseDTO) {
+                _signUpUserLiveData.value = response
             }
         })
     }
