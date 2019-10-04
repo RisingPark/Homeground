@@ -2,6 +2,7 @@ package com.homeground.app.view.point.save.model
 
 import androidx.core.view.OneShotPreDrawListener.add
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.JsonArray
 import com.homeground.app.common.Utils
 import com.homeground.app.common.bean.BaseResponseDTO
 import com.homeground.app.common.interfaces.OnResponseListener
@@ -12,9 +13,18 @@ import com.homeground.app.view.point.save.bean.PointInfoResponseDTO
 import com.homeground.app.view.point.search.bean.UserInfoListResponseDTO
 import com.homeground.app.view.point.search.bean.UserInfoResponseDTO
 import com.orhanobut.logger.Logger
+import org.json.JSONArray
 import org.json.JSONObject
 
 class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
+
+    // 포인트 히스토리
+    override fun getPointHistory(
+        user: UserInfoResponseDTO?,
+        onResponseListener: OnResponseListener<ArrayList<PointInfoResponseDTO>>?
+    ) {
+
+    }
 
     override fun setPointSave(type:Int, user: UserInfoResponseDTO?, point:String, onResponseListener: OnResponseListener<UserInfoResponseDTO>?) {
         FirebaseFirestore.getInstance()
@@ -51,26 +61,25 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
             }
     }
 
+    /**
+     * 포인트 리스트 가져오기
+     */
     private fun getPointList(type: Int, user: UserInfoResponseDTO?, point: Long , onResponseListener: OnResponseListener<UserInfoResponseDTO>?){
         FirebaseFirestore.getInstance()
             .collection("point")
             .document(user?.did!!)
             .get()
             .addOnSuccessListener {
-                Logger.d("[addOnSuccessListener] ${it?.data?.get("history")}")
+                Logger.d("[addOnSuccessListener] ${it}")
 
                 val history: PointInfoListResponseDTO
-                if (it?.data?.get("history") == null){
+                history = if (it?.data?.get("pointInfoResponseDTO") == null){
                     val list = ArrayList<PointInfoResponseDTO>()
-                    history = PointInfoListResponseDTO(list)
+                    PointInfoListResponseDTO(list)
                 } else {
-
-                    //todo 수정
-//                    history = (it.data?.get("history"))
-                    val list = ArrayList<PointInfoResponseDTO>()
-                    history = PointInfoListResponseDTO(list)
+                    val list = it.data?.get("pointInfoResponseDTO") as ArrayList<PointInfoResponseDTO>
+                    PointInfoListResponseDTO(list)
                 }
-
 
                 addPointList(type, history, user, point, onResponseListener)
             }.addOnFailureListener{
@@ -84,6 +93,9 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
 
     }
 
+    /**
+     * 포인트 리스트에 추가
+     */
     private fun addPointList(type: Int, history: PointInfoListResponseDTO , user: UserInfoResponseDTO?, point: Long , onResponseListener: OnResponseListener<UserInfoResponseDTO>?){
         val status = if (type == PointSaveFragment.POINT_SAVE) "+" else "-"
 
@@ -94,14 +106,10 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
             user?.last_point_date,
             point))
 
-        val point = hashMapOf(
-            "history" to history
-        )
-
         FirebaseFirestore.getInstance()
             .collection("point")
             .document(user?.did!!)
-            .set(point)
+            .set(history)
             .addOnSuccessListener {
                 Logger.d("[addOnSuccessListener]")
                 changePointSave(user, onResponseListener)
@@ -147,4 +155,6 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
         }
         return resultPoint
     }
+
+
 }
