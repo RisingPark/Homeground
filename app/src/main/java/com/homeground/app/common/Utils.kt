@@ -37,7 +37,7 @@ class Utils {
 
         }
 
-        fun addCommaStrNum(num: String): String {
+        fun addCommaStrNum(num: String?): String {
             val df = DecimalFormat("#,##0")
             return try {
                 df.format(parseLong(num))
@@ -49,6 +49,15 @@ class Utils {
         fun addCommaP(num: Long?): String {
             return try {
                 addComma(num) + " P"
+            } catch (e: NumberFormatException) {
+                "-"
+            }
+
+        }
+
+        fun addCommaP(num: String?): String {
+            return try {
+                addCommaStrNum(num) + " P"
             } catch (e: NumberFormatException) {
                 "-"
             }

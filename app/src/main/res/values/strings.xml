@@ -7,6 +7,8 @@
     <string name="sign_up">회원가입</string>
     <string name="save">적립</string>
     <string name="use">사용</string>
+    <string name="point_save">포인트 적립</string>
+    <string name="point_use">포인트 사용</string>
     <string name="search">조회</string>
     <string name="user_search">사용자 조회</string>
     <string name="settings">설정</string>

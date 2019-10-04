@@ -40,7 +40,8 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class PointSearchFragment : BaseFragment<FragmentUserInfoBinding, PointSearchViewModel>() {
 
-    var resultNum :String = ""
+    private var resultNum :String = ""
+    private var prePhone :String = ""
 
     companion object {
         fun newInstance() = PointSearchFragment()
@@ -59,6 +60,7 @@ class PointSearchFragment : BaseFragment<FragmentUserInfoBinding, PointSearchVie
     override fun initDataBinding() {
         vm.userPointLiveData.observe(this, androidx.lifecycle.Observer {
             hideLoadingProgress()
+            clearPhoneData()
             if (it.isSuccess){
                 val isEmpty = Utils.isEmpty(it.userInfoResponseDTO)
                 point_search_empty_layout.visibility = if (isEmpty) View.VISIBLE else View.GONE
@@ -73,12 +75,12 @@ class PointSearchFragment : BaseFragment<FragmentUserInfoBinding, PointSearchVie
                         this.items = it.userInfoResponseDTO as ArrayList<UserInfoResponseDTO>
                         onPointSaveClickListener = object :OnItemClickListener{
                             override fun onItemClickListener(view: View, position: Int) {
-                                addFragment(PointSaveFragment.newInstance())
+                                addFragment(PointSaveFragment.newInstance(PointSaveFragment.POINT_SAVE, items[position]))
                             }
                         }
                         onPointUesClickListener = object :OnItemClickListener{
                             override fun onItemClickListener(view: View, position: Int) {
-
+                                addFragment(PointSaveFragment.newInstance(PointSaveFragment.POINT_USE, items[position]))
                             }
                         }
                         onPointHistoryClickListener = object :OnItemClickListener{
@@ -115,6 +117,7 @@ class PointSearchFragment : BaseFragment<FragmentUserInfoBinding, PointSearchVie
 
                 if(resultNum.length > 3) {
                     showLoadingProgress()
+                    prePhone = resultNum
                     vm.getUserPoint(resultNum)
                 }
             }
@@ -128,10 +131,26 @@ class PointSearchFragment : BaseFragment<FragmentUserInfoBinding, PointSearchVie
         }
 
         key_clear.setOnClickListener {
-            if (resultNum.isNotEmpty()){
-                resultNum = ""
-                otp_view.otp = resultNum
+            clearPhoneData()
+        }
+    }
+
+    fun changeUserData(user: UserInfoResponseDTO?) {
+        val copyItem = ArrayList<UserInfoResponseDTO>(mUserListRecyclerViewAdapter.items)
+        for ((count, item) in copyItem.withIndex()) {
+            if (item.did.equals(user?.did)){
+                user?.let {
+                    mUserListRecyclerViewAdapter.items[count] = it
+                    mUserListRecyclerViewAdapter.notifyItemChanged(count)
+                }
             }
+        }
+    }
+
+    private fun clearPhoneData(){
+        if (resultNum.isNotEmpty()){
+            resultNum = ""
+            otp_view.otp = resultNum
         }
     }
 }

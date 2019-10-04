@@ -18,8 +18,13 @@ class PointSearchModelImpl : PointSearchModel, DataModelImpl() {
             .get()
             .addOnSuccessListener { documentSnapshot  ->
                 Logger.d("[addOnSuccessListener] ${documentSnapshot.toObjects(UserInfoResponseDTO::class.java)}")
-
                 val items = (documentSnapshot.toObjects(UserInfoResponseDTO::class.java) as List<UserInfoResponseDTO>)
+
+                var count = 0
+                for (item in items){ // document id 만 따로 추가
+                    item.did = documentSnapshot.documents[count++].id
+                }
+
                 onResponseListener.onCompleteListener(UserInfoListResponseDTO(items).apply {
                     isSuccess = true
                 })

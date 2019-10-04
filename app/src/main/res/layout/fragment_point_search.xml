@@ -7,7 +7,7 @@
         android:layout_height="match_parent"
         tools:context=".view.auth.signup.UserInfoFragment"
         android:orientation="vertical"
-        android:background="@color/white">
+        style="@style/CommonContainerLayout">
 
         <include layout="@layout/layout_common_toolbar" />
 

@@ -32,7 +32,6 @@ class CommonDialog : DialogFragment() {
         arguments?.let {
             msg = it.getString(KEY_MSG, "")
         }
-
     }
 
     override fun onCreateView(

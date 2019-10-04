@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minWidth="@dimen/common_dialog_min_width"
     android:maxWidth="@dimen/common_dialog_max_width">
 
     <TextView

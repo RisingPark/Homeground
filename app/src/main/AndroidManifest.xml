@@ -45,12 +45,6 @@
             android:theme="@style/NoActionBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
 
-        <activity android:name=".view.point.save.PointSaveActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:screenOrientation="landscape"
-            android:theme="@style/NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
-
         <activity android:name=".view.settings.SettingsActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="landscape"

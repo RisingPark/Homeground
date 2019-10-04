@@ -5,7 +5,6 @@ import com.homeground.app.R
 import com.homeground.app.model.DataModelImpl
 import com.homeground.app.view.auth.signup.UserInfoActivity
 import com.homeground.app.view.main.bean.MenuItemDTO
-import com.homeground.app.view.point.save.PointSaveActivity
 import com.homeground.app.view.point.search.PointSearchActivity
 import com.homeground.app.view.settings.SettingsActivity
 

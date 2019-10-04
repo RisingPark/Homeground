@@ -32,6 +32,11 @@
         <item name="android:background">@color/white</item>
     </style>
 
+    <style name="CommonContainerLayout">
+        <item name="android:clickable">true</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
     <style name="HintText" parent="Widget.Design.TextInputLayout">
         <item name="android:textColor">@color/warm_grey</item>
         <item name="android:textSize">@dimen/text_size_12</item>
@@ -56,6 +61,7 @@
     <style name="TableRowStyle">
         <item name="android:layout_weight">1</item>
     </style>
+
 
 
 

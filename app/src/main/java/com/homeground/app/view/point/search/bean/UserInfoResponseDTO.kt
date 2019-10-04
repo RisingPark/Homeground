@@ -1,10 +1,14 @@
 package com.homeground.app.view.point.search.bean
 
-data class UserInfoResponseDTO(val name: String? = null,
-                               val phone: String? = null,
-                               val phone_id: String? = null,
-                               val birthday: String? = null,
-                               val note: String? = null,
-                               val sign_up_date: String? = null,
-                               val point: Long? = null,
-                               val last_point_date: String? = null)
+import com.homeground.app.common.bean.BaseResponseDTO
+import java.io.Serializable
+
+data class UserInfoResponseDTO(var name: String? = null,
+                               var phone: String? = null,
+                               var phone_id: String? = null,
+                               var birthday: String? = null,
+                               var note: String? = null,
+                               var sign_up_date: String? = null,
+                               var point: Long? = null,
+                               var last_point_date: String? = null,
+                               var did: String? = null) : Serializable, BaseResponseDTO()

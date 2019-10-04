@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@color/white">
+        style="@style/CommonContainerLayout">
 
         <include layout="@layout/layout_common_toolbar" />
 
@@ -17,7 +17,52 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:padding="@dimen/common_padding_start"
                 android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/point_name_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_20"
+                        android:text="-"/>
+
+                    <TextView
+                        android:id="@+id/point_birthday_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/common_padding"
+                        android:textColor="@color/grey"
+                        android:textSize="@dimen/text_size_20"
+                        android:text="-"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/point_point_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:layout_marginStart="@dimen/common_padding"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_size_25"
+                    android:text="-"/>
+
+                <TextView
+                    android:id="@+id/point_last_point_date_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:layout_marginStart="@dimen/common_padding"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/text_size_15"
+                    android:text="-"/>
 
             </LinearLayout>
 
@@ -28,40 +73,23 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/point_num_money_text"
+                    android:id="@+id/point_num_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="0 P"
+                    android:textColor="@color/red"
+                    android:textSize="@dimen/text_size_30" />
+
+                <TextView
+                    android:id="@+id/point_money_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/text_size_30"
+                    android:textColor="@color/black"
                     android:gravity="end"
-                    android:textColor="@color/red"
-                    android:text="0 P"/>
+                    android:text="0 원"/>
 
-                <RelativeLayout
-                    android:id="@+id/point_money_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/point_money_str_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_size_25"
-                        android:textColor="@color/black"
-                        android:layout_centerVertical="true"
-                        android:text="금액"/>
-
-                    <TextView
-                        android:id="@+id/point_money_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toEndOf="@+id/point_money_str_text"
-                        android:textSize="@dimen/text_size_30"
-                        android:textColor="@color/black"
-                        android:gravity="end"
-                        android:text="0 원"/>
-
-                </RelativeLayout>
 
                 <include layout="@layout/layout_cal_pad"/>
 

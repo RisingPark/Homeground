@@ -74,7 +74,7 @@
                     android:id="@+id/user_list_birthday_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/common_padding_start"
+                    android:layout_marginStart="@dimen/common_padding"
                     android:text="-"
                     android:textColor="@color/grey"
                     android:textSize="@dimen/text_size_15" />
@@ -102,7 +102,7 @@
             android:layout_toEndOf="@+id/user_list_layout"
             android:gravity="end"
             android:text="-"
-            android:textColor="@color/point"
+            android:textColor="@color/red"
             android:textSize="@dimen/text_size_20" />
 
     </RelativeLayout>
