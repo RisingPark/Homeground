@@ -14,10 +14,14 @@ import com.homeground.app.common.base.BaseFragment
 import com.homeground.app.common.interfaces.OnDialogResultListener
 import com.homeground.app.common.ui.textview.ScaleTextView
 import com.homeground.app.databinding.FragmentUserInfoBinding
+import com.homeground.app.view.point.save.adapter.PointHistoryAdapter
+import com.homeground.app.view.point.save.bean.PointInfoResponseDTO
 import com.homeground.app.view.point.save.model.PointSaveViewModel
 import com.homeground.app.view.point.search.PointSearchActivity
 import com.homeground.app.view.point.search.PointSearchFragment
+import com.homeground.app.view.point.search.adapter.UserListRecyclerViewAdapter
 import com.homeground.app.view.point.search.bean.UserInfoResponseDTO
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_point_save.*
 
 import kotlinx.android.synthetic.main.layout_common_toolbar.*
@@ -34,6 +38,7 @@ import kotlinx.android.synthetic.main.layout_cal_pad.key_8
 import kotlinx.android.synthetic.main.layout_cal_pad.key_9
 import kotlinx.android.synthetic.main.layout_cal_pad.key_del
 import kotlinx.android.synthetic.main.layout_number_pad.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
@@ -45,6 +50,7 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
     private var resultPoint: String = ""
     private var mType: Int? = 0
     private lateinit var mUser: UserInfoResponseDTO
+    private val mPointHistoryAdapter: PointHistoryAdapter by inject()
 
     companion object {
         const val POINT_SAVE = 0
@@ -86,6 +92,7 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
     }
 
     override fun initDataBinding() {
+        // 적립/사용
         vm.pointSaveLiveData.observe(this, Observer {
             hideLoadingProgress()
             if (it.isSuccess){
@@ -113,10 +120,25 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
             }
 
         })
+
+        // 포인트 내역
+        vm.pointHistoryLiveData.observe(this, Observer {
+            hideLoadingProgress()
+            Logger.d("[포인트 내역]" + it)
+            if (it.isSuccess) {
+                point_recycler_view.run {
+                    adapter = mPointHistoryAdapter.apply {
+                        this.items = it.pointInfoResponseDTO as ArrayList<PointInfoResponseDTO>
+                    }
+                }
+            } else {
+                DialogHelper.showCommonDialog(getBaseActivity(), it.msg, null)
+            }
+        })
     }
 
     override fun initAfterBinding() {
-
+        vm.getPointHistory(mUser)
     }
 
     /**

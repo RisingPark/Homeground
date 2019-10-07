@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.homeground.app.common.base.BaseViewModel
 import com.homeground.app.common.interfaces.OnResponseListener
+import com.homeground.app.view.point.save.bean.PointInfoListResponseDTO
 import com.homeground.app.view.point.save.bean.PointInfoResponseDTO
 import com.homeground.app.view.point.search.bean.UserInfoListResponseDTO
 import com.homeground.app.view.point.search.bean.UserInfoResponseDTO
@@ -13,9 +14,9 @@ class PointSaveViewModel(private val model: PointSaveModel) : BaseViewModel() {
     val pointSaveLiveData: LiveData<UserInfoResponseDTO>
         get() = _pointSaveLiveData
 
-    private val _pointHistorytLiveData = MutableLiveData<ArrayList<PointInfoResponseDTO>>()
-    val pointHistorytLiveData: LiveData<ArrayList<PointInfoResponseDTO>>
-        get() = _pointHistorytLiveData
+    private val _pointHistoryLiveData = MutableLiveData<PointInfoListResponseDTO>()
+    val pointHistoryLiveData: LiveData<PointInfoListResponseDTO>
+        get() = _pointHistoryLiveData
 
 
     fun savePoint(type:Int, user: UserInfoResponseDTO, point:String){
@@ -27,9 +28,9 @@ class PointSaveViewModel(private val model: PointSaveModel) : BaseViewModel() {
     }
 
     fun getPointHistory(user: UserInfoResponseDTO){
-        model.getPointHistory(user, object : OnResponseListener<ArrayList<PointInfoResponseDTO>?> {
-            override fun onCompleteListener(response: ArrayList<PointInfoResponseDTO>?) {
-                _pointHistorytLiveData.value = response
+        model.getPointHistory(user, object : OnResponseListener<PointInfoListResponseDTO> {
+            override fun onCompleteListener(response: PointInfoListResponseDTO) {
+                _pointHistoryLiveData.value = response
             }
         })
     }

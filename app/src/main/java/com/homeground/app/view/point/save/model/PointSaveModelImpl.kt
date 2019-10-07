@@ -1,29 +1,49 @@
 package com.homeground.app.view.point.save.model
 
-import androidx.core.view.OneShotPreDrawListener.add
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.JsonArray
 import com.homeground.app.common.Utils
-import com.homeground.app.common.bean.BaseResponseDTO
 import com.homeground.app.common.interfaces.OnResponseListener
 import com.homeground.app.model.DataModelImpl
 import com.homeground.app.view.point.save.PointSaveFragment
 import com.homeground.app.view.point.save.bean.PointInfoListResponseDTO
 import com.homeground.app.view.point.save.bean.PointInfoResponseDTO
-import com.homeground.app.view.point.search.bean.UserInfoListResponseDTO
 import com.homeground.app.view.point.search.bean.UserInfoResponseDTO
 import com.orhanobut.logger.Logger
-import org.json.JSONArray
-import org.json.JSONObject
 
 class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
 
     // 포인트 히스토리
     override fun getPointHistory(
         user: UserInfoResponseDTO?,
-        onResponseListener: OnResponseListener<ArrayList<PointInfoResponseDTO>>?
+        onResponseListener: OnResponseListener<PointInfoListResponseDTO>?
     ) {
+        FirebaseFirestore.getInstance()
+            .collection("point")
+            .document(user?.did!!)
+            .get()
+            .addOnSuccessListener {
+                Logger.d("[addOnSuccessListener] ${it}")
 
+                val history: PointInfoListResponseDTO
+                history = if (it?.data?.get("pointInfoResponseDTO") == null) {
+                    val list = ArrayList<PointInfoResponseDTO>()
+                    PointInfoListResponseDTO(list)
+                } else {
+                    val list = it.data?.get("pointInfoResponseDTO") as ArrayList<PointInfoResponseDTO>
+                    PointInfoListResponseDTO(list)
+                }
+
+                onResponseListener?.onCompleteListener(history.apply {
+                    history.isSuccess = true
+                })
+            }.addOnFailureListener{
+                Logger.d("[addOnFailureListener] ${it.message}")
+                val responseDTO = PointInfoListResponseDTO(null).apply {
+                    isSuccess = false
+                    msg = it.message!!
+                }
+                onResponseListener?.onCompleteListener(responseDTO)
+            }
     }
 
     override fun setPointSave(type:Int, user: UserInfoResponseDTO?, point:String, onResponseListener: OnResponseListener<UserInfoResponseDTO>?) {
@@ -96,34 +116,36 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
     /**
      * 포인트 리스트에 추가
      */
-    private fun addPointList(type: Int, history: PointInfoListResponseDTO , user: UserInfoResponseDTO?, point: Long , onResponseListener: OnResponseListener<UserInfoResponseDTO>?){
+    private fun addPointList(type: Int, history: PointInfoListResponseDTO? , user: UserInfoResponseDTO?, point: Long , onResponseListener: OnResponseListener<UserInfoResponseDTO>?){
         val status = if (type == PointSaveFragment.POINT_SAVE) "+" else "-"
 
-        history.pointInfoResponseDTO.add(PointInfoResponseDTO(user?.did,
+        history?.pointInfoResponseDTO?.add(PointInfoResponseDTO(user?.did,
             user?.name,
             user?.phone ,
             status,
             user?.last_point_date,
             point))
 
-        FirebaseFirestore.getInstance()
-            .collection("point")
-            .document(user?.did!!)
-            .set(history)
-            .addOnSuccessListener {
-                Logger.d("[addOnSuccessListener]")
-                changePointSave(user, onResponseListener)
-            }.addOnFailureListener{
-                Logger.d("[addOnFailureListener] ${it.message}")
-                val responseDTO = UserInfoResponseDTO(null).apply {
-                    isSuccess = false
-                    msg = it.message!!
+        history?.let {
+            FirebaseFirestore.getInstance()
+                .collection("point")
+                .document(user?.did!!)
+                .set(it)
+                .addOnSuccessListener {
+                    Logger.d("[addOnSuccessListener]")
+                    changePointSave(user, onResponseListener)
+                }.addOnFailureListener{
+                    Logger.d("[addOnFailureListener] ${it.message}")
+                    val responseDTO = UserInfoResponseDTO(null).apply {
+                        isSuccess = false
+                        msg = it.message!!
+                    }
+                    onResponseListener?.onCompleteListener(responseDTO)
                 }
-                onResponseListener?.onCompleteListener(responseDTO)
-            }
+        }
     }
 
-    private fun changePointSave(user: UserInfoResponseDTO?, onResponseListener: OnResponseListener<UserInfoResponseDTO>?){
+    private fun changePointSave(user: UserInfoResponseDTO?, onResponseListener: OnResponseListener<UserInfoResponseDTO>?) {
         FirebaseFirestore.getInstance()
             .collection("user")
             .document("${user?.did}")
@@ -155,6 +177,4 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
         }
         return resultPoint
     }
-
-
 }

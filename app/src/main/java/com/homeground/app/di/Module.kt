@@ -6,6 +6,7 @@ import com.homeground.app.model.DataModelImpl
 import com.homeground.app.view.auth.signup.model.UserInfoViewModel
 import com.homeground.app.view.intro.model.IntroViewModel
 import com.homeground.app.view.main.model.*
+import com.homeground.app.view.point.save.adapter.PointHistoryAdapter
 import com.homeground.app.view.point.save.model.PointSaveModel
 import com.homeground.app.view.point.save.model.PointSaveModelImpl
 import com.homeground.app.view.point.save.model.PointSaveViewModel
@@ -41,6 +42,7 @@ var viewModelPart = module {
 var adapterPart = module {
     factory { MenuRecyclerViewAdapter() }
     factory { UserListRecyclerViewAdapter() }
+    factory { PointHistoryAdapter() }
 }
 
 var module = listOf(viewModelPart, modelPart, adapterPart)
