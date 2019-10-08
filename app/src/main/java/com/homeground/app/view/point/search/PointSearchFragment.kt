@@ -13,6 +13,7 @@ import com.homeground.app.common.base.BaseFragment
 import com.homeground.app.common.interfaces.OnItemClickListener
 import com.homeground.app.common.ui.textview.ScaleTextView
 import com.homeground.app.databinding.FragmentUserInfoBinding
+import com.homeground.app.view.auth.signup.UserInfoFragment
 import com.homeground.app.view.point.save.PointSaveFragment
 import com.homeground.app.view.point.search.adapter.UserListRecyclerViewAdapter
 import com.homeground.app.view.point.search.bean.UserInfoResponseDTO
@@ -85,7 +86,7 @@ class PointSearchFragment : BaseFragment<FragmentUserInfoBinding, PointSearchVie
                         }
                         onPointHistoryClickListener = object :OnItemClickListener{
                             override fun onItemClickListener(view: View, position: Int) {
-
+                                addFragment(UserInfoFragment.newInstance(UserInfoFragment.MODIFY, items[position]))
                             }
                         }
                     }

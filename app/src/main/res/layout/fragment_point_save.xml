@@ -18,12 +18,12 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:padding="@dimen/common_padding_start"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/common_padding"
                     android:orientation="horizontal">
 
                     <TextView
@@ -49,28 +49,18 @@
                     android:id="@+id/point_point_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
                     android:layout_marginStart="@dimen/common_padding"
                     android:textColor="@color/red"
                     android:textSize="@dimen/text_size_25"
                     android:text="-"/>
 
-                <TextView
-                    android:id="@+id/point_last_point_date_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:layout_marginStart="@dimen/common_padding"
-                    android:textColor="@color/grey"
-                    android:textSize="@dimen/text_size_15"
-                    android:text="-"/>
-
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/point_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:reverseLayout="true"
+                    app:stackFromEnd="true"/>
 
             </LinearLayout>
 

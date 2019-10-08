@@ -23,6 +23,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
             .get()
             .addOnSuccessListener {
                 Logger.d("[addOnSuccessListener] ${it}")
+//                Logger.d("[addOnSuccessListener] ${it.toObject(PointInfoListResponseDTO::class.java)}")
 
                 val history: PointInfoListResponseDTO
                 history = if (it?.data?.get("pointInfoResponseDTO") == null) {
@@ -46,7 +47,13 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
             }
     }
 
-    override fun setPointSave(type:Int, user: UserInfoResponseDTO?, point:String, onResponseListener: OnResponseListener<UserInfoResponseDTO>?) {
+    override fun setPointSave(
+        type: Int,
+        user: UserInfoResponseDTO?,
+        point: String,
+        onResponseListener: OnResponseListener<UserInfoResponseDTO>?,
+        onPointListResponseListener: OnResponseListener<PointInfoListResponseDTO>?
+    ) {
         FirebaseFirestore.getInstance()
             .collection("user")
             .document("${user?.did}")
@@ -61,7 +68,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
 
                 Logger.d("[addOnSuccessListener]item: $item")
                 if (item.point!! >= 0){
-                    getPointList(type, item, point.toLong() ,onResponseListener)
+                    getPointList(type, item, point.toLong() ,onResponseListener, onPointListResponseListener)
                 } else {
                     val responseDTO = UserInfoResponseDTO(null).apply {
                         isSuccess = false
@@ -84,7 +91,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
     /**
      * 포인트 리스트 가져오기
      */
-    private fun getPointList(type: Int, user: UserInfoResponseDTO?, point: Long , onResponseListener: OnResponseListener<UserInfoResponseDTO>?){
+    private fun getPointList(type: Int, user: UserInfoResponseDTO?, point: Long , onResponseListener: OnResponseListener<UserInfoResponseDTO>?, onPointListResponseListener: OnResponseListener<PointInfoListResponseDTO>?){
         FirebaseFirestore.getInstance()
             .collection("point")
             .document(user?.did!!)
@@ -92,7 +99,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
             .addOnSuccessListener {
                 Logger.d("[addOnSuccessListener] ${it}")
 
-                val history: PointInfoListResponseDTO
+                val history: PointInfoListResponseDTO?
                 history = if (it?.data?.get("pointInfoResponseDTO") == null){
                     val list = ArrayList<PointInfoResponseDTO>()
                     PointInfoListResponseDTO(list)
@@ -101,7 +108,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
                     PointInfoListResponseDTO(list)
                 }
 
-                addPointList(type, history, user, point, onResponseListener)
+                addPointList(type, history, user, point, onResponseListener, onPointListResponseListener)
             }.addOnFailureListener{
                 Logger.d("[addOnFailureListener] ${it.message}")
                 val responseDTO = UserInfoResponseDTO(null).apply {
@@ -116,7 +123,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
     /**
      * 포인트 리스트에 추가
      */
-    private fun addPointList(type: Int, history: PointInfoListResponseDTO? , user: UserInfoResponseDTO?, point: Long , onResponseListener: OnResponseListener<UserInfoResponseDTO>?){
+    private fun addPointList(type: Int, history: PointInfoListResponseDTO? , user: UserInfoResponseDTO?, point: Long , onResponseListener: OnResponseListener<UserInfoResponseDTO>?, onPointListResponseListener: OnResponseListener<PointInfoListResponseDTO>?){
         val status = if (type == PointSaveFragment.POINT_SAVE) "+" else "-"
 
         history?.pointInfoResponseDTO?.add(PointInfoResponseDTO(user?.did,
@@ -133,6 +140,9 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
                 .set(it)
                 .addOnSuccessListener {
                     Logger.d("[addOnSuccessListener]")
+                    onPointListResponseListener?.onCompleteListener(history.apply {
+                        isSuccess = true
+                    })
                     changePointSave(user, onResponseListener)
                 }.addOnFailureListener{
                     Logger.d("[addOnFailureListener] ${it.message}")
@@ -165,7 +175,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
             }
     }
 
-    private fun calPoint(type:Int, totalPoint:Long?, point:Long) : Long{
+    private fun calPoint(type:Int, totalPoint:Long?, point:Long) : Long {
         var resultPoint: Long = 0
         when(type){
             PointSaveFragment.POINT_SAVE -> {

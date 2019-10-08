@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="@dimen/common_padding"
-
     android:orientation="vertical" >
 
     <TextView
@@ -27,6 +26,6 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/common_line_width"
         android:layout_marginTop="@dimen/common_padding"
-        android:background="@color/warm_grey"/>
+        android:background="@color/warm_grey_two"/>
 
 </LinearLayout>

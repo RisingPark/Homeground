@@ -5,6 +5,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="sign_up">회원가입</string>
+    <string name="user_info_modify">회원정보수정</string>
     <string name="save">적립</string>
     <string name="use">사용</string>
     <string name="point_save">포인트 적립</string>
@@ -17,9 +18,12 @@
     <string name="birthday">생년월일</string>
     <string name="note">비고</string>
     <string name="do_join">가입하기</string>
+    <string name="do_modify">수정하기</string>
     <string name="confirm">확인</string>
     <string name="sign_up_finish">회원가입이 완료되었습니다.</string>
+    <string name="modify_finish">회원정보수정이 완료되었습니다.</string>
     <string name="sign_up_fail">회원가입을 실패하였습니다.</string>
+    <string name="modify_fail">회원가입을 실패하였습니다.</string>
     <string name="user_empty">회원이 존재하지 않습니다.</string>
     <string name="user_default">휴대폰 번호 뒷자리\n4자리를 입력해주세요.</string>
 

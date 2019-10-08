@@ -9,6 +9,6 @@ class UserInfoActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
-        setReplaceFragment(UserInfoFragment.newInstance())
+        setReplaceFragment(UserInfoFragment.newInstance(UserInfoFragment.SIGN_UP))
     }
 }

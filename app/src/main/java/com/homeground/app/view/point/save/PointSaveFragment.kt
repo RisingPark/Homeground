@@ -118,17 +118,15 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
             } else {
                 DialogHelper.showCommonDialog(getBaseActivity(), it.msg, null)
             }
-
         })
 
         // 포인트 내역
         vm.pointHistoryLiveData.observe(this, Observer {
             hideLoadingProgress()
-            Logger.d("[포인트 내역]" + it)
             if (it.isSuccess) {
                 point_recycler_view.run {
                     adapter = mPointHistoryAdapter.apply {
-                        this.items = it.pointInfoResponseDTO as ArrayList<PointInfoResponseDTO>
+                        this.items = it?.pointInfoResponseDTO
                     }
                 }
             } else {
@@ -184,7 +182,6 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
         point_name_text.text = mUser.name
         point_birthday_text.text = "(${mUser.birthday})"
         point_point_text.text = "${mUser.point.toString()} P"
-        point_last_point_date_text.text = mUser.last_point_date
     }
 
     private fun setNumberKeyPad() {
@@ -266,6 +263,5 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
     private fun refreshPoint(user: UserInfoResponseDTO){
         clearNumber()
         point_point_text.text = "${user.point.toString()} P"
-        point_last_point_date_text.text = user.last_point_date
     }
 }

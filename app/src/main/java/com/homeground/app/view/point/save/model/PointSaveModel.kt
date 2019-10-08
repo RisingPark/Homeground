@@ -8,6 +8,6 @@ import com.tistory.deque.kotlinmvvmsample.model.DataModel
 
 interface PointSaveModel :DataModel {
 
-    fun setPointSave(type:Int, user: UserInfoResponseDTO?, point:String, onResponseListener: OnResponseListener<UserInfoResponseDTO>?)
+    fun setPointSave(type:Int, user: UserInfoResponseDTO?, point:String, onResponseListener: OnResponseListener<UserInfoResponseDTO>?, onPointListResponseListener: OnResponseListener<PointInfoListResponseDTO>?)
     fun getPointHistory(user: UserInfoResponseDTO?, onResponseListener: OnResponseListener<PointInfoListResponseDTO>?)
 }

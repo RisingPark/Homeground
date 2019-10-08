@@ -24,6 +24,10 @@ class PointSaveViewModel(private val model: PointSaveModel) : BaseViewModel() {
             override fun onCompleteListener(response: UserInfoResponseDTO) {
                 _pointSaveLiveData.value = response
             }
+        }, object : OnResponseListener<PointInfoListResponseDTO> {
+            override fun onCompleteListener(response: PointInfoListResponseDTO) {
+                _pointHistoryLiveData.value = response
+            }
         })
     }
 

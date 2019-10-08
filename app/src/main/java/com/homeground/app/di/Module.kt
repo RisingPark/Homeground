@@ -3,6 +3,8 @@ package com.homeground.app.di
 import com.homeground.app.view.main.adapter.MenuRecyclerViewAdapter
 import com.tistory.deque.kotlinmvvmsample.model.DataModel
 import com.homeground.app.model.DataModelImpl
+import com.homeground.app.view.auth.signup.model.UserInfoModel
+import com.homeground.app.view.auth.signup.model.UserInfoModelImpl
 import com.homeground.app.view.auth.signup.model.UserInfoViewModel
 import com.homeground.app.view.intro.model.IntroViewModel
 import com.homeground.app.view.main.model.*
