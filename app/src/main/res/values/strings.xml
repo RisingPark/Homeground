@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Hello world</string>
-    <string name="app_name_en">Hello world</string>
+    <string name="app_name">홈그라운드</string>
+    <string name="app_name_en">HOMEGROUND</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -26,6 +26,7 @@
     <string name="modify_fail">회원가입을 실패하였습니다.</string>
     <string name="user_empty">회원이 존재하지 않습니다.</string>
     <string name="user_default">휴대폰 번호 뒷자리\n4자리를 입력해주세요.</string>
+    <string name="percent">적립 %</string>
 
     <string name="key_00">00</string>
     <string name="key_0">0</string>

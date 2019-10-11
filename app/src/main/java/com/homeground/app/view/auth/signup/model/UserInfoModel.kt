@@ -2,6 +2,7 @@ package com.homeground.app.view.auth.signup.model
 
 import com.homeground.app.common.bean.BaseResponseDTO
 import com.homeground.app.common.interfaces.OnResponseListener
+import com.homeground.app.view.point.search.bean.UserInfoResponseDTO
 import com.tistory.deque.kotlinmvvmsample.model.DataModel
 
 interface UserInfoModel :DataModel {
@@ -15,11 +16,11 @@ interface UserInfoModel :DataModel {
     )
 
     fun modifyUser(
-        did: String,
+        user: UserInfoResponseDTO?,
         name: String,
         phone: String,
         birthDay: String,
         note: String,
-        onResponseListener: OnResponseListener<BaseResponseDTO>
+        onResponseListener: OnResponseListener<UserInfoResponseDTO>
     )
 }

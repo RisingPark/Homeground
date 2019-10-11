@@ -5,19 +5,20 @@ import com.homeground.app.common.Utils
 import com.homeground.app.common.bean.BaseResponseDTO
 import com.homeground.app.common.interfaces.OnResponseListener
 import com.homeground.app.model.DataModelImpl
+import com.homeground.app.view.point.search.bean.UserInfoResponseDTO
 import com.orhanobut.logger.Logger
 
 class UserInfoModelImpl: UserInfoModel, DataModelImpl() {
     override fun modifyUser(
-        did: String,
+        user: UserInfoResponseDTO?,
         name: String,
         phone: String,
         birthDay: String,
         note: String,
-        onResponseListener: OnResponseListener<BaseResponseDTO>
+        onResponseListener: OnResponseListener<UserInfoResponseDTO>
     ) {
         val phoneId =  phone.split("-")[2]
-        val user = hashMapOf(
+        val userMap = hashMapOf(
             "name" to name,
             "phone" to phone,
             "phone_id" to phoneId,
@@ -26,14 +27,25 @@ class UserInfoModelImpl: UserInfoModel, DataModelImpl() {
         )
         FirebaseFirestore.getInstance()
             .collection("user")
-            .document(did)
-            .update(user as Map<String, Any>)
+            .document(user?.did.toString())
+            .update(userMap as Map<String, Any>)
             .addOnSuccessListener {
                 Logger.d("[addOnSuccessListener]")
-                onResponseListener.onCompleteListener(BaseResponseDTO(true, ""))
+
+                onResponseListener.onCompleteListener(user?.apply {
+                    isSuccess = true
+                    this.name = name
+                    this.phone = phone
+                    this.phone_id = phoneId
+                    this.birthday = birthDay
+                    this.note = note
+                }!!)
             }.addOnFailureListener{
                 Logger.d("[addOnFailureListener] ${it.message}")
-                onResponseListener.onCompleteListener(BaseResponseDTO(false, ""))
+                onResponseListener.onCompleteListener(UserInfoResponseDTO().apply {
+                    isSuccess = false
+                    msg = ""
+                })
             }
     }
 

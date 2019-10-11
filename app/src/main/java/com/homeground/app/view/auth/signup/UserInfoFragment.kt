@@ -19,6 +19,7 @@ import com.homeground.app.common.DialogHelper
 import com.homeground.app.common.Utils
 import com.homeground.app.common.interfaces.OnDialogResultListener
 import com.homeground.app.view.point.save.PointSaveFragment
+import com.homeground.app.view.point.search.PointSearchActivity
 import com.homeground.app.view.point.search.bean.UserInfoResponseDTO
 import java.util.*
 
@@ -91,6 +92,7 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
         vm.modifyUserLiveData.observe(this, androidx.lifecycle.Observer {
             hideLoadingProgress()
             if (it.isSuccess) {
+                (activity as PointSearchActivity).changeUserInfo(it) // 리스트 갱신
                 var msg = name_edit.text.toString()+"님\n"+getString(R.string.modify_finish)
                 DialogHelper.showCommonDialog(getBaseActivity(), msg, object : OnDialogResultListener{
                     override fun resultSuccess(data: String) {
@@ -136,14 +138,16 @@ class UserInfoFragment : BaseFragment<FragmentUserInfoBinding, UserInfoViewModel
                     text= getString(R.string.do_modify)
                     visibility = View.VISIBLE
                     setOnClickListener {
-                        if (isValid()){
+                        if (isValid()) {
                             showLoadingProgress()
-                            vm.setModifyUser(
-                                mUser?.did.toString(),
-                                name_edit.text.toString(),
-                                phone_edit.text.toString(),
-                                birthday_edit.text.toString(),
-                                note_edit.text.toString())
+                            mUser?.let { it1 ->
+                                vm.setModifyUser(
+                                    it1,
+                                    name_edit.text.toString(),
+                                    phone_edit.text.toString(),
+                                    birthday_edit.text.toString(),
+                                    note_edit.text.toString())
+                            }
                         }
                     }
                 }

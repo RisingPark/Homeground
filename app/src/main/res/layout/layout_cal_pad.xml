@@ -27,6 +27,12 @@
                 style="@style/KeyPadStyle"
                 android:text="@string/key_3" />
 
+            <com.homeground.app.common.ui.textview.ScaleTextView
+                android:id="@+id/key_percent"
+                style="@style/KeyPadStyle"
+                android:textSize="@dimen/text_size_15"
+                android:text="-" />
+
         </TableRow>
 
         <TableRow style="@style/TableRowStyle">

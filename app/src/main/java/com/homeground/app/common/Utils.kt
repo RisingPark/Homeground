@@ -1,5 +1,7 @@
 package com.homeground.app.common
 
+import android.content.Context
+import android.content.pm.PackageManager
 import java.lang.Long.parseLong
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -99,8 +101,25 @@ class Utils {
             return returnValue
         }
 
+
+
+        /**
+         * Get Application Version Name
+         *
+         * @param context Context
+         * @return Version name of Application
+         * @throws PackageManager.NameNotFoundException
+         */
+        fun getApplicationVersionName(context: Context, defaultVersionName: String): String {
+            try {
+                val packageManager = context.packageManager
+                val info = packageManager.getPackageInfo(context.packageName, 0)
+                return info.versionName
+            } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
+                return defaultVersionName
+            }
+
+        }
     }
-
-
-
 }

@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 
 import com.homeground.app.R
 import com.homeground.app.common.DialogHelper
+import com.homeground.app.common.Preference
 import com.homeground.app.common.Utils
 import com.homeground.app.common.base.BaseFragment
 import com.homeground.app.common.interfaces.OnDialogResultListener
@@ -185,6 +186,8 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
     }
 
     private fun setNumberKeyPad() {
+        key_percent.text = activity?.let { "${Preference.getPercent(it)}% 적립" }
+
         val numBtn: Array<ScaleTextView> =
             arrayOf(key_0, key_00, key_1, key_2, key_3, key_4, key_5, key_6, key_7, key_8, key_9)
         for (view in numBtn) {
@@ -253,7 +256,7 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
     private fun calPoint(num: String): String {
         if (num.isEmpty()) return ""
 
-        return (num.toDouble() * 0.05).toLong().toString()
+        return (num.toDouble() * 0.01 * Preference.getPercent(activity!!).toDouble()).toLong().toString()
     }
 
     private fun getFinishText(): String {
