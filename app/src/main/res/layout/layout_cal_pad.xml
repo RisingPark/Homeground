@@ -30,8 +30,7 @@
             <com.homeground.app.common.ui.textview.ScaleTextView
                 android:id="@+id/key_percent"
                 style="@style/KeyPadStyle"
-                android:textSize="@dimen/text_size_15"
-                android:text="-" />
+                android:textSize="@dimen/text_size_15" />
 
         </TableRow>
 
@@ -81,8 +80,8 @@
                 android:layout_height="match_parent">
 
                 <com.homeground.app.common.ui.imageview.ScaleImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/common_icon_size"
+                    android:layout_height="@dimen/common_icon_size"
                     android:layout_gravity="center"
                     android:src="@drawable/outline_arrow_back_black_36" />
 

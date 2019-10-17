@@ -8,6 +8,7 @@ import com.homeground.app.view.point.save.bean.PointInfoListResponseDTO
 import com.homeground.app.view.point.save.bean.PointInfoResponseDTO
 import com.homeground.app.view.point.search.bean.UserInfoListResponseDTO
 import com.homeground.app.view.point.search.bean.UserInfoResponseDTO
+import com.orhanobut.logger.Logger
 
 class PointSaveViewModel(private val model: PointSaveModel) : BaseViewModel() {
     private val _pointSaveLiveData = MutableLiveData<UserInfoResponseDTO>()
@@ -18,9 +19,15 @@ class PointSaveViewModel(private val model: PointSaveModel) : BaseViewModel() {
     val pointHistoryLiveData: LiveData<PointInfoListResponseDTO>
         get() = _pointHistoryLiveData
 
+    private val _cancelPointHistoryLiveData = MutableLiveData<PointInfoListResponseDTO>()
+    val cancelPointHistoryLiveData: LiveData<PointInfoListResponseDTO>
+        get() = _cancelPointHistoryLiveData
 
-    fun savePoint(type:Int, user: UserInfoResponseDTO, point:String){
-        model.setPointSave(type, user, point, object : OnResponseListener<UserInfoResponseDTO> {
+    /**
+     * 포인트 적립
+     */
+    fun savePoint(type:Int, user: UserInfoResponseDTO, device: String, point:String){
+        model.setPointSave(type, user, device ,point, object : OnResponseListener<UserInfoResponseDTO> {
             override fun onCompleteListener(response: UserInfoResponseDTO) {
                 _pointSaveLiveData.value = response
             }
@@ -31,8 +38,24 @@ class PointSaveViewModel(private val model: PointSaveModel) : BaseViewModel() {
         })
     }
 
+    /**
+     * 포인트 내역
+     */
     fun getPointHistory(user: UserInfoResponseDTO){
         model.getPointHistory(user, object : OnResponseListener<PointInfoListResponseDTO> {
+            override fun onCompleteListener(response: PointInfoListResponseDTO) {
+                _pointHistoryLiveData.value = response
+            }
+        })
+    }
+
+    fun cancelPoint(user: UserInfoResponseDTO, pointList: ArrayList<PointInfoResponseDTO>?, position: Int){
+        model.updatePointHistory(user, pointList, position, object :OnResponseListener<UserInfoResponseDTO>{
+            override fun onCompleteListener(response: UserInfoResponseDTO) {
+                _pointSaveLiveData.value = response
+            }
+
+        },object : OnResponseListener<PointInfoListResponseDTO> {
             override fun onCompleteListener(response: PointInfoListResponseDTO) {
                 _pointHistoryLiveData.value = response
             }

@@ -65,6 +65,7 @@
                     app:height="@dimen/point_search_box_size"
                     app:width="@dimen/point_search_box_size"
                     app:length="4"
+                    app:box_margin="@dimen/point_box_margin"
                     app:otp_text_size="@dimen/text_size_25" />
 
                 <include layout="@layout/layout_number_pad"/>

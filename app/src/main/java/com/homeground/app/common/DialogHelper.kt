@@ -30,6 +30,13 @@ class DialogHelper {
                 showAllowingStateLoss(activity, this, this.javaClass.name)
             }
         }
+
+        fun showCommonDialog(activity: BaseActivity?, msg: String?, leftBtnText: String?, onDialogResultListener: OnDialogResultListener?) {
+            CommonDialog.newInstance(msg, leftBtnText, onDialogResultListener).apply {
+                showAllowingStateLoss(activity, this, this.javaClass.name)
+            }
+        }
+
     }
 
 }

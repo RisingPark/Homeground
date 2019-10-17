@@ -67,8 +67,8 @@
                 android:layout_height="match_parent">
 
                 <com.homeground.app.common.ui.imageview.ScaleImageView
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/common_icon_size"
+                    android:layout_width="@dimen/common_icon_size"
                     android:layout_gravity="center"
                     android:src="@drawable/outline_arrow_back_black_36"/>
 

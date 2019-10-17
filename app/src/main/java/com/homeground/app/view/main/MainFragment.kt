@@ -5,8 +5,10 @@ import android.view.View
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.homeground.app.BuildConfig
 import com.homeground.app.R
 import com.homeground.app.common.CommonOpener
+import com.homeground.app.common.Preference
 import com.homeground.app.common.base.BaseFragment
 import com.homeground.app.databinding.FragmentMainBinding
 import com.homeground.app.view.main.adapter.MenuRecyclerViewAdapter
@@ -38,7 +40,9 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
     override fun initStartView() {
         setClickListener()
-        setBanner()
+        checkFirstLauncher()
+        if (!BuildConfig.DEBUG)
+            setBanner()
     }
 
     override fun initDataBinding() {
@@ -94,7 +98,7 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
         drawer_layout.closeDrawer(GravityCompat.START)
     }
 
-    fun setBanner(){
+    private fun setBanner(){
         val imageList = ArrayList<String>()
         imageList.add("https://scontent-icn1-1.xx.fbcdn.net/v/t1.0-9/11873360_898280743552396_101394436020645043_n.jpg?_nc_cat=107&_nc_oc=AQmC93feHG01xrjlPKLc5dSGCzdR7KtkPSLTl_XXOPo2r5UUxXrnCA0ZxGyPRcXGtLY&_nc_ht=scontent-icn1-1.xx&oh=9f2ddefe04b8cd85b44841e5c8ab5f0b&oe=5E32A245")
         imageList.add("https://scontent-icn1-1.xx.fbcdn.net/v/t1.0-9/11916097_900336123346858_2967648002865893854_n.jpg?_nc_cat=100&_nc_oc=AQkMZu_QIQsFZ3eXnXYGxOpYZebMB5bpoV9U3b9CB722SKwKFyKtsZShmxSvNThETJU&_nc_ht=scontent-icn1-1.xx&oh=b1544fa35d553801b4c1661c83a97e02&oe=5E1F65D6")
@@ -106,5 +110,15 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
         banner.setDelayTime(7000)
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
         banner.start()
+    }
+
+
+    private fun checkFirstLauncher(){
+        activity?.let {
+            if (Preference.isFirstLauncher(it)) {
+                Preference.setDeviceName(it,"POS_"+(0..99).random())
+                Preference.setFirstLauncher(it, false)
+            }
+        }
     }
 }

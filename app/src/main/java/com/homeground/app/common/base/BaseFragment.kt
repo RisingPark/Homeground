@@ -2,6 +2,7 @@ package com.homeground.app.common.base
 
 import android.app.Activity
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ abstract class BaseFragment<T : ViewDataBinding, R : BaseViewModel> : Fragment()
     lateinit var viewDataBinding: T
     abstract val layoutResourceId: Int
     abstract val vm: R
+    val mHandler = Handler()
 
     abstract fun initStartView()
     abstract fun initDataBinding()

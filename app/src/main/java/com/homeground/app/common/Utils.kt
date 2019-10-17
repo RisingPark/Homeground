@@ -119,7 +119,7 @@ class Utils {
                 e.printStackTrace()
                 return defaultVersionName
             }
-
         }
+
     }
 }

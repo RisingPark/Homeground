@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- text size -->
+    <dimen name="text_size_12">24sp</dimen>
+    <dimen name="text_size_13">26sp</dimen>
+    <dimen name="text_size_14">28sp</dimen>
+    <dimen name="text_size_15">30sp</dimen>
+    <dimen name="text_size_16">32sp</dimen>
+    <dimen name="text_size_17">34sp</dimen>
+    <dimen name="text_size_18">36sp</dimen>
+    <dimen name="text_size_19">38sp</dimen>
+    <dimen name="text_size_20">40sp</dimen>
+    <dimen name="text_size_25">50sp</dimen>
+    <dimen name="text_size_30">60sp</dimen>
+    <dimen name="text_size_60">120sp</dimen>
+
+    <dimen name="layout_padding">40dp</dimen>
+    <dimen name="main_menu_padding">20dp</dimen>
+    <dimen name="main_menu_item_padding">40dp</dimen>
+
+    <dimen name="common_line_width">2dp</dimen>
+    <dimen name="common_toolbar_height">86dp</dimen>
+    <dimen name="common_toolbar_padding_start_end">40dp</dimen>
+    <dimen name="common_toolbar_padding_start">24dp</dimen>
+    <dimen name="common_toolbar_title_padding">60dp</dimen>
+    <dimen name="common_padding">10dp</dimen>
+    <dimen name="common_padding_start">20dp</dimen>
+    <dimen name="common_toolbar_icon_padding_start_end">36dp</dimen>
+    <dimen name="common_toolbar_icon_padding_top_bottom">16dp</dimen>
+
+    <dimen name="common_button_height">100dp</dimen>
+    <dimen name="common_dialog_max_width">800dp</dimen>
+    <dimen name="common_dialog_min_width">400dp</dimen>
+    <dimen name="common_icon_size">80dp</dimen>
+
+    <!--  fragment_point_search  -->
+    <dimen name="point_search_box_size">100dp</dimen>
+    <dimen name="user_list_bottom_view_width">160dp</dimen>
+    <dimen name="point_box_margin">20dp</dimen>
+
+    <!--    fragment_main-->
+    <dimen name="main_menu_size">100dp</dimen>
+    <dimen name="main_drawer_width">480dp</dimen>
+
+    <!--  fragment_settings -->
+    <dimen name="settings_icon_margin_top">60dp</dimen>
+</resources>

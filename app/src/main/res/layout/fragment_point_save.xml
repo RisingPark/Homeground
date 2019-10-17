@@ -40,7 +40,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/common_padding"
                         android:textColor="@color/grey"
-                        android:textSize="@dimen/text_size_20"
+                        android:textSize="@dimen/text_size_15"
                         android:text="-"/>
 
                 </LinearLayout>
@@ -58,6 +58,7 @@
                     android:id="@+id/point_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:paddingEnd="@dimen/common_padding"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:reverseLayout="true"
                     app:stackFromEnd="true"/>
@@ -68,7 +69,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:animateLayoutChanges="true">
 
                 <TextView
                     android:id="@+id/point_num_text"
@@ -83,7 +85,7 @@
                     android:id="@+id/point_money_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/text_size_30"
+                    android:textSize="@dimen/text_size_25"
                     android:textColor="@color/black"
                     android:gravity="end"
                     android:text="0 원"/>
@@ -94,11 +96,11 @@
                 <com.homeground.app.common.ui.button.AlphaButton
                     android:id="@+id/point_done_btn"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
+                    android:layout_height="wrap_content"
                     android:textColor="@color/white"
                     android:background="@color/red"
                     android:gravity="center"
-                    android:textSize="@dimen/text_size_20"
+                    android:textSize="@dimen/text_size_25"
                     android:text="done"
                     />
 

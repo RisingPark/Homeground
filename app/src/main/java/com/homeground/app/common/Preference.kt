@@ -26,7 +26,51 @@ class Preference {
                 e.printStackTrace()
                 return 5
             }
+        }
+
+        fun setDeviceName(context: Context, value: String) {
+            try {
+                val setting = context.getSharedPreferences(PREFS_USER_INFO, Context.MODE_PRIVATE)
+                val editor = setting.edit()
+                editor.putString("device_name", value)
+                editor.apply()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
         }
+
+        fun getDeviceName(context: Context): String {
+            try {
+                val setting = context.getSharedPreferences(PREFS_USER_INFO, Context.MODE_PRIVATE)
+                return setting.getString("device_name", "")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return ""
+            }
+        }
+
+        fun setFirstLauncher(context: Context, value: Boolean) {
+            try {
+                val setting = context.getSharedPreferences(PREFS_USER_INFO, Context.MODE_PRIVATE)
+                val editor = setting.edit()
+                editor.putBoolean("first_launcher", value)
+                editor.apply()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+        }
+
+        fun isFirstLauncher(context: Context): Boolean {
+            try {
+                val setting = context.getSharedPreferences(PREFS_USER_INFO, Context.MODE_PRIVATE)
+                return setting.getBoolean("first_launcher", true)
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return false
+            }
+        }
+
     }
 }

@@ -20,15 +20,15 @@
 
             <ImageView
                 android:id="@+id/menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/main_menu_size"
+                android:layout_height="@dimen/main_menu_size"
                 android:padding="@dimen/main_menu_padding"
                 android:src="@drawable/baseline_menu_white_48" />
 
         </RelativeLayout>
 
         <com.google.android.material.navigation.NavigationView
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/main_drawer_width"
             android:layout_height="match_parent"
             android:layout_gravity="start">
 
