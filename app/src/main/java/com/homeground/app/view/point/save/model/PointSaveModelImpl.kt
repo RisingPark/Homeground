@@ -93,40 +93,21 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
                             Logger.d("[addOnSuccessListener] ${it.toObject(UserInfoResponseDTO::class.java)}")
                             val item = (it.toObject(UserInfoResponseDTO::class.java) as UserInfoResponseDTO)
 
-                            val checksum = item.checkSum?.split("/")
-                            val checkDevice = checksum?.get(0)
-                            val checkTimeMillis  = checksum?.get(1)
-                            val checkTime = (System.currentTimeMillis() - checkTimeMillis?.toLong()!!)
-                            Logger.d("[checkTime]$checkTime")
-                            if (Preference.getDeviceName(context) != checkDevice
-                                || checkTime > 2500) {
-                                onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
-                                    this.isSuccess = false
-                                    msg = "다른 기기에서 같은 사용자를 처리 중 입니다.\n 잠시 후 다시 시도해주시기 바랍니다."
-                                })
-                                return@addOnSuccessListener
-                            } else if(item.point != user.point){
-                                onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
-                                    this.isSuccess = false
-                                    msg = "사용자 정보가 변경되었습니다.\n다시 사용자 조회 후 이용해주세요."
-                                })
-                                return@addOnSuccessListener
-                            }
+                            if (isValid(context, item, user?.point!!, onResponseListener)){
+                                item.did = user?.did
+                                item.point = calPoint(type, item.point, point.toLong()) // 포인트 적립/사용
+                                item.last_point_date = Utils.getCurrentDate()
 
-
-                            item.did = user?.did
-                            item.point = calPoint(type, item.point, point.toLong()) // 포인트 적립/사용
-                            item.last_point_date = Utils.getCurrentDate()
-
-                            Logger.d("[addOnSuccessListener]item: $item")
-                            if (item.point!! >= 0){
-                                getPointList(type, item, device, point.toLong() ,onResponseListener, onPointListResponseListener)
-                            } else {
-                                val responseDTO = UserInfoResponseDTO(null).apply {
-                                    this.isSuccess = false
-                                    msg = "사용가능 포인트가 부족합니다."
+                                Logger.d("[addOnSuccessListener]item: $item")
+                                if (item.point!! >= 0){
+                                    getPointList(type, item, device, point.toLong() ,onResponseListener, onPointListResponseListener)
+                                } else {
+                                    val responseDTO = UserInfoResponseDTO(null).apply {
+                                        this.isSuccess = false
+                                        msg = "사용가능 포인트가 부족합니다."
+                                    }
+                                    onResponseListener?.onCompleteListener(responseDTO)
                                 }
-                                onResponseListener?.onCompleteListener(responseDTO)
                             }
                         }.addOnFailureListener {
                             onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
@@ -268,90 +249,70 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
                             Logger.d("[addOnSuccessListener] ${it.toObject(UserInfoResponseDTO::class.java)}")
                             val item = (it.toObject(UserInfoResponseDTO::class.java) as UserInfoResponseDTO)
 
-                            val checksum = item.checkSum?.split("/")
-                            val checkDevice = checksum?.get(0)
-                            val checkTimeMillis  = checksum?.get(1)
-                            val checkTime = (System.currentTimeMillis() - checkTimeMillis?.toLong()!!)
-                            Logger.d("[checkTime]$checkTime")
-                            if (Preference.getDeviceName(context) != checkDevice
-                                || checkTime > 2000) {
-                                onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
-                                    this.isSuccess = false
-                                    msg = "다른 기기에서 같은 사용자를 처리 중 입니다.\n 잠시 후 다시 시도해주시기 바랍니다."
-                                })
-                                return@addOnSuccessListener
-                            } else if(item.point != user.point){
-                                onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
-                                    this.isSuccess = false
-                                    msg = "사용자 정보가 변경되었습니다.\n다시 사용자 조회 후 이용해주세요."
-                                })
-                                return@addOnSuccessListener
-                            }
+                            if (isValid(context, item, user?.point!!, onResponseListener)){
+                                //START
+                                FirebaseFirestore.getInstance()
+                                    .collection("point")
+                                    .document(user?.did!!)
+                                    .get()
+                                    .addOnSuccessListener {
+                                        Logger.d("[addOnSuccessListener] ${it}")
 
-                            //START
-                            FirebaseFirestore.getInstance()
-                                .collection("point")
-                                .document(user?.did!!)
-                                .get()
-                                .addOnSuccessListener {
-                                    Logger.d("[addOnSuccessListener] ${it}")
+                                        val list = it.data?.get("pointInfoResponseDTO") as ArrayList<*>?
 
-                                    val list = it.data?.get("pointInfoResponseDTO") as ArrayList<*>?
+                                        var isValid = false
+                                        if (list?.size == pointList?.size) {
+                                            for (i in list?.indices!!){
+                                                if (list?.toArray()?.get(i) is HashMap<*,*>) {
+                                                    val currentMap = parseMap(list, i)
 
-                                    var isValid = false
-                                    if (list?.size == pointList?.size) {
-                                        for (i in list?.indices!!){
-                                            if (list?.toArray()?.get(i) is HashMap<*,*>) {
-                                                val currentMap = parseMap(list, i)
+                                                    var state= ""
+                                                    try{
+                                                        state = parseMap(pointList, i).get("state") as String
+                                                    } catch (e:Exception){
+                                                        state = parseList(pointList, i).state.toString()
+                                                    }
 
-                                                var state= ""
-                                                try{
-                                                    state = parseMap(pointList, i).get("state") as String
-                                                } catch (e:Exception){
-                                                    state = parseList(pointList, i).state.toString()
+                                                    isValid = currentMap?.get("state").toString().equals(state)
+                                                    if (!isValid) break
                                                 }
 
-                                                isValid = currentMap?.get("state").toString().equals(state)
-                                                if (!isValid) break
                                             }
+                                            if (isValid){
+                                                val cancelPoint = parseMap(list, position)?.get("point").toString().toLong()
+                                                when(parseMap(list, position)?.get("state")) {
+                                                    "+" -> {
+                                                        user?.point = user?.point?.minus(cancelPoint)
+                                                    }
+                                                    "-" -> {
+                                                        user?.point = user?.point?.plus(cancelPoint)
+                                                    }
+                                                }
 
-                                        }
-                                        if (isValid){
-                                            val cancelPoint = parseMap(list, position)?.get("point").toString().toLong()
-                                            when(parseMap(list, position)?.get("state")) {
-                                                "+" -> {
-                                                    user?.point = user?.point?.minus(cancelPoint)
-                                                }
-                                                "-" -> {
-                                                    user?.point = user?.point?.plus(cancelPoint)
-                                                }
+                                                parseMap(list, position)["state"] = "!${parseMap(list, position)?.get("state")}"
+                                                changePointList(user, PointInfoListResponseDTO(list as ArrayList<PointInfoResponseDTO>?), onResponseListener, onPointResponseListener)
+                                            } else{
+                                                onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
+                                                    this.isSuccess = false
+                                                    msg = "취소 중 에러발생: 회원 조회부터 다시 해주시기 바랍니다."
+                                                })
                                             }
-
-                                            parseMap(list, position)["state"] = "!${parseMap(list, position)?.get("state")}"
-                                            changePointList(user, PointInfoListResponseDTO(list as ArrayList<PointInfoResponseDTO>?), onResponseListener, onPointResponseListener)
-                                        } else{
+                                        } else {
                                             onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
                                                 this.isSuccess = false
                                                 msg = "취소 중 에러발생: 회원 조회부터 다시 해주시기 바랍니다."
                                             })
                                         }
-                                    } else {
+
+
+                                    }.addOnFailureListener{
+                                        Logger.d("[addOnFailureListener] ${it.message}")
                                         onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
                                             this.isSuccess = false
-                                            msg = "취소 중 에러발생: 회원 조회부터 다시 해주시기 바랍니다."
+                                            msg = it.message!!
                                         })
                                     }
-
-
-                                }.addOnFailureListener{
-                                    Logger.d("[addOnFailureListener] ${it.message}")
-                                    onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
-                                        this.isSuccess = false
-                                        msg = it.message!!
-                                    })
-                                }
-
-
+                            }
                         }.addOnFailureListener {
                             onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
                                 this.isSuccess = false
@@ -368,81 +329,6 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
         })
 
     }
-
-
-//    /**
-//     * 포인트 히스토리 변경
-//     */
-//    override fun aaupdatePointHistory(
-//        user: UserInfoResponseDTO?,
-//        pointList: ArrayList<PointInfoResponseDTO>?,
-//        position: Int,
-//        onResponseListener: OnResponseListener<UserInfoResponseDTO>?,
-//        onPointResponseListener: OnResponseListener<PointInfoListResponseDTO>?
-//    ) {
-//
-//        FirebaseFirestore.getInstance()
-//            .collection("point")
-//            .document(user?.did!!)
-//            .get()
-//            .addOnSuccessListener {
-//                Logger.d("[addOnSuccessListener] ${it}")
-//
-//                val list = it.data?.get("pointInfoResponseDTO") as ArrayList<*>?
-//
-//                var isValid = false
-//                if (list?.size == pointList?.size) {
-//                    for (i in list?.indices!!){
-//                        if (list?.toArray()?.get(i) is HashMap<*,*>) {
-//                            val currentMap = parseMap(list, i)
-//
-//                            var state= ""
-//                            try{
-//                                state = parseMap(pointList, i).get("state") as String
-//                            } catch (e:Exception){
-//                                state = parseList(pointList, i).state.toString()
-//                            }
-//
-//                            isValid = currentMap?.get("state").toString().equals(state)
-//                            if (!isValid) break
-//                        }
-//
-//                    }
-//                    if (isValid){
-//                        val cancelPoint = parseMap(list, position)?.get("point").toString().toLong()
-//                        when(parseMap(list, position)?.get("state")) {
-//                            "+" -> {
-//                                user?.point = user?.point?.minus(cancelPoint)
-//                            }
-//                            "-" -> {
-//                                user?.point = user?.point?.plus(cancelPoint)
-//                            }
-//                        }
-//
-//                        parseMap(list, position)["state"] = "!${parseMap(list, position)?.get("state")}"
-//                        changePointList(user, PointInfoListResponseDTO(list as ArrayList<PointInfoResponseDTO>?), onResponseListener, onPointResponseListener)
-//                    } else{
-//                        onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
-//                            isSuccess = false
-//                            msg = "취소 중 에러발생: 회원 조회를 다시 해주시기 바랍니다."
-//                        })
-//                    }
-//                } else {
-//                    onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
-//                        isSuccess = false
-//                        msg = "취소 중 에러발생: 회원 조회를 다시 해주시기 바랍니다."
-//                    })
-//                }
-//
-//
-//            }.addOnFailureListener{
-//                Logger.d("[addOnFailureListener] ${it.message}")
-//                onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
-//                    isSuccess = false
-//                    msg = it.message!!
-//                })
-//            }
-//    }
 
 
     /**
@@ -481,5 +367,33 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
 
     private fun parseList(list: ArrayList<*>?, position: Int) : PointInfoResponseDTO{
         return list?.get(position) as PointInfoResponseDTO
+    }
+
+    private fun isValid(context: Context, item: UserInfoResponseDTO, userPoint: Long,  onResponseListener: OnResponseListener<UserInfoResponseDTO>?): Boolean{
+        val checksum = item.checkSum?.split("/")
+        val checkDevice = checksum?.get(0)
+        val checkTimeMillis  = checksum?.get(1)
+        val checkTime = (System.currentTimeMillis() - checkTimeMillis?.toLong()!!)
+        Logger.d("[checkTime]$checkTime")
+        if (Preference.getDeviceName(context) != checkDevice) {
+            onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
+                this.isSuccess = false
+                msg = "다른 기기에서 같은 사용자를 처리 중 입니다.\n 잠시 후 다시 시도해주시기 바랍니다."
+            })
+            return false
+        } else if(checkTime > 2200){
+            onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
+                this.isSuccess = false
+                msg = "잠시 후 이용해 주시기 바랍니다."
+            })
+            return false
+        } else if(item.point != userPoint){
+            onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
+                this.isSuccess = false
+                msg = "사용자 정보가 변경되었습니다.\n다시 사용자 조회 후 이용해 주시기 바랍니다."
+            })
+            return false
+        }
+        return true
     }
 }
