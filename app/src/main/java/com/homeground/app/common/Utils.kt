@@ -121,5 +121,15 @@ class Utils {
             }
         }
 
+        fun parseCheckSum(context: Context): String {
+            try {
+                return Preference.getDeviceName(context) +"/"+ System.currentTimeMillis()
+            } catch (e: PackageManager.NameNotFoundException) {
+                e.printStackTrace()
+                return ""
+            }
+        }
+
+
     }
 }

@@ -11,4 +11,5 @@ data class UserInfoResponseDTO(var name: String? = null,
                                var sign_up_date: String? = null,
                                var point: Long? = null,
                                var last_point_date: String? = null,
-                               var did: String? = null) : Serializable, BaseResponseDTO()
+                               var did: String? = null,
+                               var checkSum: String? = null) : Serializable, BaseResponseDTO()

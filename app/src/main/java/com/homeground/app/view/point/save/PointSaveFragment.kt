@@ -157,7 +157,7 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
                                             isCanceled = true
                                             showLoadingProgress()
                                             var copyUser = mUser.copy()
-                                            vm.cancelPoint(copyUser, items, position)
+                                            vm.cancelPoint(it, copyUser, items, position)
                                         }
 
                                         override fun resultFailure(failMsg: String) {
@@ -193,7 +193,7 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
 
             showLoadingProgress()
             activity?.let {
-                vm.savePoint(POINT_SAVE, mUser, Preference.getDeviceName(it), resultPoint)
+                vm.savePoint(it, POINT_SAVE, mUser, Preference.getDeviceName(it), resultPoint)
             }
         }
         setPointSaveKeyPad()
@@ -211,7 +211,7 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
 
             showLoadingProgress()
             activity?.let {
-                vm.savePoint(POINT_USE, mUser, Preference.getDeviceName(it), resultPoint)
+                vm.savePoint(it, POINT_USE, mUser, Preference.getDeviceName(it), resultPoint)
             }
         }
     }

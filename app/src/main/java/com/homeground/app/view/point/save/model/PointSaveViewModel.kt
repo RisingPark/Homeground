@@ -1,5 +1,6 @@
 package com.homeground.app.view.point.save.model
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.homeground.app.common.base.BaseViewModel
@@ -26,8 +27,8 @@ class PointSaveViewModel(private val model: PointSaveModel) : BaseViewModel() {
     /**
      * 포인트 적립
      */
-    fun savePoint(type:Int, user: UserInfoResponseDTO, device: String, point:String){
-        model.setPointSave(type, user, device ,point, object : OnResponseListener<UserInfoResponseDTO> {
+    fun savePoint(context: Context, type:Int, user: UserInfoResponseDTO, device: String, point:String){
+        model.setPointSave(context, type, user, device ,point, object : OnResponseListener<UserInfoResponseDTO> {
             override fun onCompleteListener(response: UserInfoResponseDTO) {
                 _pointSaveLiveData.value = response
             }
@@ -49,8 +50,8 @@ class PointSaveViewModel(private val model: PointSaveModel) : BaseViewModel() {
         })
     }
 
-    fun cancelPoint(user: UserInfoResponseDTO, pointList: ArrayList<PointInfoResponseDTO>?, position: Int){
-        model.updatePointHistory(user, pointList, position, object :OnResponseListener<UserInfoResponseDTO>{
+    fun cancelPoint(context: Context, user: UserInfoResponseDTO, pointList: ArrayList<PointInfoResponseDTO>?, position: Int){
+        model.updatePointHistory(context, user, pointList, position, object :OnResponseListener<UserInfoResponseDTO>{
             override fun onCompleteListener(response: UserInfoResponseDTO) {
                 _pointSaveLiveData.value = response
             }
