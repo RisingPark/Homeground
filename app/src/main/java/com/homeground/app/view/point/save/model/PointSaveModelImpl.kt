@@ -24,11 +24,12 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
 
     private fun setCheckSum(context: Context, user: UserInfoResponseDTO, onCompleteListener: OnCompleteListener?) {
         val checkSum = Utils.parseCheckSum(context)
+
         FirebaseFirestore
             .getInstance()
             .collection("user")
             .document(user?.did!!)
-            .update("checkSum", checkSum)
+            .update("check_sum", checkSum)
             .addOnCompleteListener(OnCompleteListener {
                 onCompleteListener?.onCompleteListener(it.isSuccessful, it.exception?.message)
             })
@@ -69,7 +70,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
     }
 
     /**
-     * 포인트 적립
+     * 포인트 적립/사용
      */
     override fun setPointSave(
         context: Context,
@@ -93,7 +94,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
                             Logger.d("[addOnSuccessListener] ${it.toObject(UserInfoResponseDTO::class.java)}")
                             val item = (it.toObject(UserInfoResponseDTO::class.java) as UserInfoResponseDTO)
 
-                            if (isValid(context, item, user?.point!!, onResponseListener)){
+                            if (isValid(context, item, user?.point!!, onResponseListener)) {
                                 item.did = user?.did
                                 item.point = calPoint(type, item.point, point.toLong()) // 포인트 적립/사용
                                 item.last_point_date = Utils.getCurrentDate()
@@ -192,6 +193,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
     }
 
     private fun changePointSave(user: UserInfoResponseDTO?, onResponseListener: OnResponseListener<UserInfoResponseDTO>?) {
+
         FirebaseFirestore.getInstance()
             .collection("user")
             .document("${user?.did}")
@@ -249,7 +251,7 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
                             Logger.d("[addOnSuccessListener] ${it.toObject(UserInfoResponseDTO::class.java)}")
                             val item = (it.toObject(UserInfoResponseDTO::class.java) as UserInfoResponseDTO)
 
-                            if (isValid(context, item, user?.point!!, onResponseListener)){
+                            if (isValid(context, item, user?.point!!, onResponseListener)) {
                                 //START
                                 FirebaseFirestore.getInstance()
                                     .collection("point")
@@ -327,7 +329,6 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
                 }
             }
         })
-
     }
 
 
@@ -370,21 +371,15 @@ class PointSaveModelImpl: PointSaveModel, DataModelImpl() {
     }
 
     private fun isValid(context: Context, item: UserInfoResponseDTO, userPoint: Long,  onResponseListener: OnResponseListener<UserInfoResponseDTO>?): Boolean{
-        val checksum = item.checkSum?.split("/")
+        val checksum = item.check_sum?.split("/")
         val checkDevice = checksum?.get(0)
-        val checkTimeMillis  = checksum?.get(1)
-        val checkTime = (System.currentTimeMillis() - checkTimeMillis?.toLong()!!)
-        Logger.d("[checkTime]$checkTime")
+
+        Logger.d("[isValid] : ${item.toString()}")
+
         if (Preference.getDeviceName(context) != checkDevice) {
             onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
                 this.isSuccess = false
-                msg = "다른 기기에서 같은 사용자를 처리 중 입니다.\n 잠시 후 다시 시도해주시기 바랍니다."
-            })
-            return false
-        } else if(checkTime > 2200){
-            onResponseListener?.onCompleteListener(UserInfoResponseDTO().apply {
-                this.isSuccess = false
-                msg = "잠시 후 이용해 주시기 바랍니다."
+                msg = "$checkDevice 기기에서 같은 사용자를 처리 중입니다.\n 잠시 후 다시 시도해 주시기 바랍니다."
             })
             return false
         } else if(item.point != userPoint){

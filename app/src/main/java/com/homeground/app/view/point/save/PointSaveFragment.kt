@@ -4,7 +4,6 @@ package com.homeground.app.view.point.save
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 
@@ -22,10 +21,7 @@ import com.homeground.app.view.point.save.adapter.PointHistoryAdapter
 import com.homeground.app.view.point.save.bean.PointInfoResponseDTO
 import com.homeground.app.view.point.save.model.PointSaveViewModel
 import com.homeground.app.view.point.search.PointSearchActivity
-import com.homeground.app.view.point.search.PointSearchFragment
-import com.homeground.app.view.point.search.adapter.UserListRecyclerViewAdapter
 import com.homeground.app.view.point.search.bean.UserInfoResponseDTO
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.fragment_point_save.*
 
 import kotlinx.android.synthetic.main.layout_common_toolbar.*
@@ -41,7 +37,6 @@ import kotlinx.android.synthetic.main.layout_cal_pad.key_7
 import kotlinx.android.synthetic.main.layout_cal_pad.key_8
 import kotlinx.android.synthetic.main.layout_cal_pad.key_9
 import kotlinx.android.synthetic.main.layout_cal_pad.key_del
-import kotlinx.android.synthetic.main.layout_number_pad.*
 import kotlinx.android.synthetic.main.layout_point_history_item.view.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -111,9 +106,9 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
                 var resultText = ""
                 if (isCanceled){
                     isCanceled = false
-                    resultText = "$cancelPoint 취소완료\n\n $oldPoint P -> ${it.point} P "
+                    resultText = "${cancelPoint} 취소완료\n\n ${Utils.addCommaP(oldPoint)} → ${Utils.addCommaP(it.point)}"
                 } else {
-                    resultText = "$resultPoint P ${getFinishText()}\n\n $oldPoint P -> ${it.point} P "
+                    resultText = "${Utils.addCommaP(resultPoint)} ${getFinishText()}\n\n ${Utils.addCommaP(oldPoint)} → ${Utils.addCommaP(it.point)}"
                 }
 
                 DialogHelper.showCommonDialog(
@@ -171,6 +166,7 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
                             }
                         }
                     }
+
                 }
             } else {
                 DialogHelper.showCommonDialog(getBaseActivity(), it.msg, null)
@@ -374,4 +370,5 @@ class PointSaveFragment : BaseFragment<FragmentUserInfoBinding, PointSaveViewMod
             if (resultNum.isNotEmpty()) Utils.addCommaP(resultPoint) else "0 P"
         return true
     }
+
 }

@@ -10,4 +10,5 @@
     <color name="warm_grey_two">#eeeeee</color>
     <color name="point">#d32f2f</color>
     <color name="blue">#3c76ff</color>
+    <color name="shimmer">#55efefef</color>
 </resources>
