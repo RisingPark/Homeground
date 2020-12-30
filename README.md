@@ -9,7 +9,7 @@ Homeground is Membership Management Application.
 
 ## Features
 
-- [o] Kotlin 
+- [x] Kotlin 
 - [x] MVVM
 - [x] Koin 
-- [x]Firestore
+- [x] Firestore
