@@ -15,3 +15,15 @@ Homeground is Membership Management Application.
 - [x] Firestore
 
 ## Sample
+
+### Find user
+![find_user](https://user-images.githubusercontent.com/62924824/103337402-917c0d80-4abe-11eb-80e0-47f77d4b9065.gif)
+
+### Save point
+![save_point](https://user-images.githubusercontent.com/62924824/103337405-92ad3a80-4abe-11eb-908d-a9bfc5d93273.gif)
+
+### Use Point
+![use_point](https://user-images.githubusercontent.com/62924824/103337406-9345d100-4abe-11eb-876f-3826740033b9.gif)
+
+### Cancel Point
+![cancel_point](https://user-images.githubusercontent.com/62924824/103337408-9345d100-4abe-11eb-9071-5fd933d31fdc.gif)
