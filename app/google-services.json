@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "957641748317",
+    "firebase_url": "https://homeground-79109.firebaseio.com",
+    "project_id": "homeground-79109",
+    "storage_bucket": "homeground-79109.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:957641748317:android:01f930f8689a74a167c2b4",
+        "android_client_info": {
+          "package_name": "com.homeground.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "957641748317-7jvrlero6gq9jqreiijq1c5vh0fhcrof.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkqR_Tir0Ou-mBDQecO2SMjVw5bEQp2Q8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "957641748317-7jvrlero6gq9jqreiijq1c5vh0fhcrof.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

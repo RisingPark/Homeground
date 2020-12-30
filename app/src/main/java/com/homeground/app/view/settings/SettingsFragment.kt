@@ -69,5 +69,4 @@ class SettingsFragment : BaseFragment<FragmentUserInfoBinding, SettingsViewModel
             device_name_edit.setText(Preference.getDeviceName(it))
         }
     }
-
 }

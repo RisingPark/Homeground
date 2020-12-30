@@ -25,7 +25,6 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * A simple [Fragment] subclass.
- *
  */
 class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
