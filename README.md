@@ -1,4 +1,4 @@
 # Homeground
-Membership Management Application. Simple, Serverless.
+Membership Management Application. This is Personal Project.
 
 Kotlin, MVVM, DI, Firestore
