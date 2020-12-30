@@ -1,2 +1,4 @@
 # Homeground
-Serverless Membership Management Application
+Membership Management Application. Simple, Serverless.
+
+Kotlin, MVVM, DI
