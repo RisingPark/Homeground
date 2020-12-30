@@ -1,4 +1,3 @@
 # Homeground
-Membership Management Application. This is Personal Project.
-
+Homeground is Membership Management Application. 
 Kotlin, MVVM, DI, Firestore
