@@ -1,4 +1,4 @@
 # Homeground
 Membership Management Application. Simple, Serverless.
 
-Kotlin, MVVM, DI
+Kotlin, MVVM, DI, Firestore
