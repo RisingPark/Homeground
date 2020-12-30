@@ -13,6 +13,7 @@ Homeground is Membership Management Application.
 - [x] MVVM
 - [x] Koin 
 - [x] Firestore
+- [x] Landscape mode
 
 ## Sample
 
